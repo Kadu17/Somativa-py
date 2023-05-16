@@ -8,6 +8,21 @@ conexao = mysql.connector.connect(
 )
 
 cursor = conexao.cursor()
-cursor.execute('select database();')
-dados = cursor.fetchall()
-print(dados)
+
+def inserir(valor, descricao):
+    inserir = f"INSERT into celulares(Marca, Preco) values('{descricao}', '{valor}') "
+    cursor.execute(inserir)
+    conexao.commit()
+    print("inserido")
+
+def buscar_dados():
+    inserir = f"select * from teste"
+    cursor.execute(inserir)
+    celulares = cursor.fetchall()
+    return celulares
+
+def delete(clear):
+    sql = f"""DELETE FROM celulares = '{clear}';"""
+    cursor.execute(sql)
+    conexao.commit()
+
