@@ -1,5 +1,6 @@
 from Site import Web
-from Conexao import conexao
+from Tela import Aplicacao
 
 
 j = Web()
+jan = Aplicacao()
