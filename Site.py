@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from time import sleep
+import Conexao
 
 class Web:
     def __init__(self):
@@ -32,12 +33,12 @@ class Web:
             celular = self.map['marca']['celulares'].replace("$$", f"{i}")
             item = self.driver.find_element(By.XPATH, celular).text
             print(item)
-
-        sleep(2)
-        for j in range(1, 11):
-            valores = self.map['marca']['valores'].replace("$$", f"{j}")
+            valores = self.map['marca']['valores'].replace("$$", f"{i}")
             item1 = self.driver.find_element(By.XPATH, valores).text
             print(item1)
+
+            Conexao.inserir(descricao=item, valor=item1)
+
 
 
 
