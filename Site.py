@@ -11,10 +11,13 @@ class Web:
                 'xpath': '/html/body/div[1]/div/div[4]/div/div[3]/button[3]'
             },
             'marca': {
-                'xpath': '/html/body/div[1]/div/div[2]/div/div/div[3]/div[2]/div[4]/div/div/div[2]/div/div[1]/ul/li[5]/div/a[2]',
+                'xpath': '/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div/div[2]/div[1]/a/div/div/div[2]/div['
+                         '1]/div[1]/div',
                 'apple': '/html/body/div[1]/div/div[2]/div/div/div[3]/div[1]/div[2]/div/div[1]/ul/li[1]/div/div/a',
-                'celulares': '/html/body/div[1]/div/div[2]/div[1]/div[2]/div[2]/div/div[2]/div[$$]/a/div/div/div[2]/div[1]/div[1]/div',
-                'valores': '/html/body/div[1]/div/div[2]/div[1]/div[2]/div[2]/div/div[2]/div[$$]/a/div/div/div[2]/div[2]/div'
+                'celulares': '/html/body/div[1]/div/div[2]/div[1]/div[2]/div[2]/div/div[2]/div[$$]/a/div/div/div['
+                             '2]/div[1]/div[1]/div',
+                'valores':   '/html/body/div[1]/div/div[2]/div[1]/div[2]/div[2]/div/div[2]/div[$$]/a/div/div/div['
+                             '2]/div[2]/div/span[2]'
             },
 
         }
