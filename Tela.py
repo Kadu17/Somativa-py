@@ -1,8 +1,11 @@
 from tkinter import ttk, Tk
 from tkinter import *
 import tkinter.font as tkFont
+from Conexao import *
+from Site import *
 
 janela = Tk()
+
 
 class Aplicacao():
     def __init__(self):
@@ -15,7 +18,6 @@ class Aplicacao():
         self.lista_tudo()
         self.janela.mainloop()
 
-
     def tela(self):
         self.janela.title("Web Scrapping")
         self.janela.configure(background="lightBlue")
@@ -23,21 +25,20 @@ class Aplicacao():
         self.janela.resizable(True, True)
         self.janela.minsize(width=300, height=500)
 
-
     def frames(self):
-    #     self.frame0 = Frame(self.janela, bg="black")
-    #     self.frame0.place(relheight=0.07, relwidth=0.94, relx=0.03, rely=0.03)
-    #     self.frame1 = Frame(self.janela, bg="black")
-    #     self.frame1.place(relheight=0.20, relwidth=0.94, relx=0.03, rely=0.12)
+        #     self.frame0 = Frame(self.janela, bg="black")
+        #     self.frame0.place(relheight=0.07, relwidth=0.94, relx=0.03, rely=0.03)
+        #     self.frame1 = Frame(self.janela, bg="black")
+        #     self.frame1.place(relheight=0.20, relwidth=0.94, relx=0.03, rely=0.12)
         self.frame2 = Frame(self.janela, bg="black")
         self.frame2.place(relheight=0.20, relwidth=0.94, relx=0.03, rely=0.34)
 
     def botoes(self):
         self.btWeb = Button(text='Web Scraping', background='#f7f8f7')
         self.btWeb.place(relx=0.05, rely=0.10, relwidth=0.18, relheight=0.04)
-        self.btBuscar = Button(text='Buscar', background='#f7f8f7')
+        self.btBuscar = Button(text='Buscar', background='#f7f8f7', command=self.buscar_produtos)
         self.btBuscar.place(relx=0.25, rely=0.10, relwidth=0.10, relheight=0.04)
-        self.btLimpar = Button(text='Limpar', background='#f7f8f7')
+        self.btLimpar = Button(text='Limpar', background='#f7f8f7', command=self.limpar)
         self.btLimpar.place(relx=0.859, rely=0.10, relwidth=0.10, relheight=0.04)
 
     def labels(self):
@@ -47,11 +48,11 @@ class Aplicacao():
         self.titulo.configure(font=fontReal)
 
     def lista_marcas(self):
-        clicked = StringVar()
-        self.drop = OptionMenu(janela, clicked, "Apple", "Samsung", "Xiaomi", "Motorola")
+        self.clicked = StringVar()
+        self.drop = OptionMenu(janela, self.clicked, "Apple", "Samsung", "Xiaomi", "Motorola")
         self.drop.pack()
         self.drop.place(relx=0.55, rely=0.10, relwidth=0.25, relheight=0.04)
-        clicked.set( "Marcas" )
+        self.clicked.set("Marcas")
 
     def lista_tudo(self):
         self.lista = ttk.Treeview(self.frame2, height=3, columns=("col1", "col2", "col3", "col4"))
@@ -72,4 +73,35 @@ class Aplicacao():
         self.lista.configure(yscrollcommand=self.scrollLista.set)
         self.scrollLista.place(relx=0.952, rely=0.079, relwidth=0.02, relheight=0.84)
 
+    def buscar_produtos(self):
+        linhas = buscar_dados()
+        print(linhas)
+        self.lista.delete(*self.lista.get_children())
+
+        if self.clicked.get() == "Apple":
+            for i in range(0, 10):
+                print(linhas[i])
+                self.lista.insert(index=i, values=[linhas[i][0], linhas[i][1]], parent="", text="")
+
+        if self.clicked.get() == "Samsung":
+            for i in range(10, 20):
+                print(linhas[i])
+                self.lista.insert(index=i, values=[linhas[i][0], linhas[i][1]], parent="", text="")
+
+        if self.clicked.get() == "Motorola":
+            for i in range(20, 30):
+                print(linhas[i])
+                self.lista.insert(index=i, values=[linhas[i][0], linhas[i][1]], parent="", text="")
+
+        if self.clicked.get() == "Xiaomi":
+            for i in range(30, 40):
+                print(linhas[i])
+                self.lista.insert(index=i, values=[linhas[i][0], linhas[i][1]], parent="", text="")
+
+    def limpar(self):
+        self.lista.delete(*self.lista.get_children())
+
+    def Scrapping(self):
+        W1 = Web
+        print(W1)
 
