@@ -41,6 +41,10 @@ class Web:
             print(item1)
 
             Conexao.inserir(descricao=item, valor=item1)
+        
+        df = pd.DataFrame({"Descrição":[celular]}, {"Preço":[valores]})
+
+        df.to_excel("Web.xlsx")
 
 
 
