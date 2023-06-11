@@ -1,49 +1,38 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from time import sleep
+
+import pandas
 import pandas as pd
 
-
-class Pd:
+class Web:
     def __init__(self):
-        self.site = ['https://shopee.com.br/Iphone-col.1214627', 'https://shopee.com.br/Samsung-col.1214628',
-                     'https://shopee.com.br/Motorola-col.1214629', 'https://shopee.com.br/Xiaomi-col.1214630']
-        self.map = {
-            'botao': {
-                'xpath': '/html/body/div[1]/div/div[4]/div/div[3]/button[3]'
-            },
-            'marca': {
-                'xpath': '/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div/div[2]/div[1]/a/div/div/div[2]/div['
-                         '1]/div[1]/div',
-                'apple': '/html/body/div[1]/div/div[2]/div/div/div[3]/div[1]/div[2]/div/div[1]/ul/li[1]/div/div/a',
-                'celulares': '/html/body/div[1]/div/div[2]/div[1]/div[2]/div[2]/div/div[2]/div[$$]/a/div/div/div['
-                             '2]/div[1]/div[1]/div',
-                'valores': '/html/body/div[1]/div/div[2]/div[1]/div[2]/div[2]/div/div[2]/div[$$]/a/div/div/div['
-                           '2]/div[2]/div/span[2]'
-            },
-
+        self.site = {
+            'site': 'https://www.magazineluiza.com.br/busca/geladeira/?filters=brand---$marca$',
+            'modelo': '/html/body/div[1]/div/main/section[4]/div[3]/div/ul/li[$modelo$]/a/div[3]/h2',
+            'precos': '/html/body/div[1]/div/main/section[4]/div[3]/div/ul/li[$preco$]/a/div[3]/div/div/p[2]',
         }
 
-        for site in self.site:
-            self.driver = webdriver.Chrome()
-            self.driver.maximize_window()
-            self.abrir(site)
+        self.driver = webdriver.Chrome()
+        self.driver.minimize_window()
 
-    def abrir(self, site):
-        self.driver.get(site)
+        marcas = ['consul', 'lg', 'brastemp', 'panasonic', 'electrolux']
 
-        sleep(2)
-        for i in range(1, 11):
-            celular = self.map['marca']['celulares'].replace("$$", f"{i}")
-            item = self.driver.find_element(By.XPATH, celular).text
-            print(item)
-            valores = self.map['marca']['valores'].replace("$$", f"{i}")
-            item1 = self.driver.find_element(By.XPATH, valores).text
-            print(item1)
+        for marca in marcas:
+            site = self.site['site'].replace("$marca$", marca)
+            self.driver.get(site)
+            for i in range(1, 11):
+                nome = self.driver.find_element(By.XPATH, self.site['modelo'].replace("$modelo$", str(i))).text
+                preco = self.driver.find_element(By.XPATH, self.site['precos'].replace('$preco$', str(i))).text
+                print(nome)
+                listanome = ([nome])
+                preco_split = preco.split("R$")
+                preco = preco_split[1].split(" ")
+                preco[1] = "R$" + preco[1]
+                preco_final = preco[1]
+                print(preco_final)
+                listapreco = ([preco])
 
-            plan = pd.DataFrame({"Descrição": item, "preço": item1})
-            print(plan)
+                lista = {"Modelos": listanome, "Preço": listapreco}
+                plan = pd.DataFrame(lista)
 
-            plan.to_excel("Relatorio.xlsx")
-
-
+                plan.to_excel("Relatorio.xlsx")
