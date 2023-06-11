@@ -1,27 +1,49 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from time import sleep
 import pandas as pd
-import requests
-from bs4 import BeautifulSoup
-
-listadesc = []
-listaprec = []
-
-site = requests.get('https://shopee.com.br/Iphone-col.1214627')
-site = BeautifulSoup (site.content, 'html.parser')
-
-nome = site.select("div class")
-valor = site.find('div')
 
 
-for c in valor:
-    print(c)
-    
-    listadesc.append(c)
+class Pd:
+    def __init__(self):
+        self.site = ['https://shopee.com.br/Iphone-col.1214627', 'https://shopee.com.br/Samsung-col.1214628',
+                     'https://shopee.com.br/Motorola-col.1214629', 'https://shopee.com.br/Xiaomi-col.1214630']
+        self.map = {
+            'botao': {
+                'xpath': '/html/body/div[1]/div/div[4]/div/div[3]/button[3]'
+            },
+            'marca': {
+                'xpath': '/html/body/div[1]/div/div[2]/div/div[2]/div[2]/div/div[2]/div[1]/a/div/div/div[2]/div['
+                         '1]/div[1]/div',
+                'apple': '/html/body/div[1]/div/div[2]/div/div/div[3]/div[1]/div[2]/div/div[1]/ul/li[1]/div/div/a',
+                'celulares': '/html/body/div[1]/div/div[2]/div[1]/div[2]/div[2]/div/div[2]/div[$$]/a/div/div/div['
+                             '2]/div[1]/div[1]/div',
+                'valores': '/html/body/div[1]/div/div[2]/div[1]/div[2]/div[2]/div/div[2]/div[$$]/a/div/div/div['
+                           '2]/div[2]/div/span[2]'
+            },
 
-for c in valor:
-    c.text
-    listaprec.append(c)
+        }
 
-listaprod = {"Descrição": listadesc, "Preço": listaprec}
-# plan = pd.DataFrame(listaprod)
+        for site in self.site:
+            self.driver = webdriver.Chrome()
+            self.driver.maximize_window()
+            self.abrir(site)
 
-# plan.to_excel("Web.xlsx")
+    def abrir(self, site):
+        self.driver.get(site)
+
+        sleep(2)
+        for i in range(1, 11):
+            celular = self.map['marca']['celulares'].replace("$$", f"{i}")
+            item = self.driver.find_element(By.XPATH, celular).text
+            print(item)
+            valores = self.map['marca']['valores'].replace("$$", f"{i}")
+            item1 = self.driver.find_element(By.XPATH, valores).text
+            print(item1)
+
+            plan = pd.DataFrame({"Descrição": item, "preço": item1})
+            print(plan)
+
+            plan.to_excel("Relatorio.xlsx")
+
+
